@@ -45,7 +45,7 @@
                     text
                     @click="save"
                 >
-                저장
+                    AddProduct
                 </v-btn>
                 <v-btn
                     color="primary"
