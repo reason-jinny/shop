@@ -36,30 +36,14 @@ public class Inventory {
 
     //<<< Clean Arch / Port Method
     public static void decreaseInventory(DeliveryStarted deliveryStarted) {
-        //implement business logic here:
-
-        /** Example 1:  new item 
-        Inventory inventory = new Inventory();
-        repository().save(inventory);
-
-        InventoryDecreased inventoryDecreased = new InventoryDecreased(inventory);
-        inventoryDecreased.publishAfterCommit();
-        */
-
-        /** Example 2:  finding and process
-        
-
-        repository().findById(deliveryStarted.get???()).ifPresent(inventory->{
+        repository().findById(deliveryStarted.getProductId()).ifPresent(inventory->{
             
-            inventory // do something
+            inventory.setQty(inventory.getQty() - deliveryStarted.getQty());
             repository().save(inventory);
 
             InventoryDecreased inventoryDecreased = new InventoryDecreased(inventory);
             inventoryDecreased.publishAfterCommit();
-
          });
-        */
-
     }
 
     //>>> Clean Arch / Port Method
@@ -91,6 +75,16 @@ public class Inventory {
 
     }
     //>>> Clean Arch / Port Method
+
+    public static void decreaseInventory(OrderPlaced orderPlaced) {
+        repository().findById(Long.valueOf(orderPlaced.getProductId())).ifPresent(inventory -> {
+            inventory.setQty(inventory.getQty() - orderPlaced.getQty());
+            repository().save(inventory);
+
+            InventoryDecreased inventoryDecreased = new InventoryDecreased(inventory);
+            inventoryDecreased.publishAfterCommit();
+        });
+    }
 
 }
 //>>> DDD / Aggregate Root

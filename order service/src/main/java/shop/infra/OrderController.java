@@ -19,5 +19,10 @@ public class OrderController {
 
     @Autowired
     OrderRepository orderRepository;
+
+    @PostMapping("/orders")
+    public Order orderPlaced (@RequestBody Order order) {
+        return orderRepository.save(order);
+    }
 }
 //>>> Clean Arch / Inbound Adaptor

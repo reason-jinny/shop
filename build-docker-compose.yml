@@ -2,6 +2,7 @@ version: '2'
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
+    platform: linux/amd64
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -12,6 +13,7 @@ services:
     container_name: my-kafka
     depends_on:
       - zookeeper
+    platform: linux/amd64
     ports:
       - 9092:9092
     environment:
@@ -23,10 +25,11 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
-  order service:
+  order-service:
     depends_on: 
       - kafka
     image: adoptopenjdk/maven-openjdk11:latest
+    platform: linux/amd64
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     command: mvn spring-boot:run
@@ -34,13 +37,14 @@ services:
       - 8082:8082
     working_dir: /usr/src
     volumes:
-      - ./order service:/usr/src
+      - ./order-service:/usr/src
       - ./maven-repo:/root/.m2
       
-  support service:
+  support-service:
     depends_on: 
       - kafka
     image: adoptopenjdk/maven-openjdk11:latest
+    platform: linux/amd64
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     command: mvn spring-boot:run
@@ -48,13 +52,14 @@ services:
       - 8083:8083
     working_dir: /usr/src
     volumes:
-      - ./support service:/usr/src
+      - ./support-service:/usr/src
       - ./maven-repo:/root/.m2
       
-  dashboard service:
+  dashboard-service:
     depends_on: 
       - kafka
     image: adoptopenjdk/maven-openjdk11:latest
+    platform: linux/amd64
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     command: mvn spring-boot:run
@@ -62,6 +67,6 @@ services:
       - 8084:8084
     working_dir: /usr/src
     volumes:
-      - ./dashboard service:/usr/src
+      - ./dashboard-service:/usr/src
       - ./maven-repo:/root/.m2
       

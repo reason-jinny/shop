@@ -12,8 +12,8 @@ import shop.infra.AbstractEvent;
 public class OrderPlaced extends AbstractEvent {
 
     private Long id;
-    private String customerId;
-    private String productId;
+    private Long customerId;
+    private Long productId;
     private Integer price;
     private Integer qty;
     private String address;
